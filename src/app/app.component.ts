@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {IProduct} from "./models/product.interface";
 import {ProductsService} from "./services/products.service";
-import {Observable, tap} from "rxjs";
+import {ModalService} from "./services/modal.service";
 
 @Component({
 	selector: 'app-root',
@@ -9,23 +8,22 @@ import {Observable, tap} from "rxjs";
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-	constructor(private readonly productService: ProductsService) {
+	constructor(public readonly productService: ProductsService, public modalService: ModalService) {
 	}
 
 	title = 'angular';
 	// products: IProduct[] = []
 	loading = false
-	products$: Observable<IProduct[]>
+	// products$: Observable<IProduct[]>
 	term: ''
 
 	ngOnInit(): void {
 		this.loading = true;
-		this.products$ = this.productService.getAll().pipe(
-			tap(() => this.loading = false)
-		)
-		// (await this.productService.getAll()).subscribe(products => {
-		// 	this.products = products
-		// 	this.loading = false;
-		// })
+		// this.products$ = this.productService.getAll().pipe(
+		// 	tap(() => this.loading = false)
+		// )
+		(this.productService.getAll()).subscribe(() => {
+			this.loading = false;
+		})
 	}
 }
